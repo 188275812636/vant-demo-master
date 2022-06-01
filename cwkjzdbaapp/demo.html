@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <title>cwkjzdba</title>
+
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/vant/4.0.0-alpha.3/index.css"/>
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/vant/4.0.0-alpha.3/index.min.css"/>
+    <!-- 自定义样式 -->
+    <style>
+        body {
+            color: #333;
+            background-color: #f8f8f8;
+        }
+        .van-field__label{
+            width: auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app">
+    <!-- 模板 -->
+    <div class="cssnj">
+        <van-form>
+
+            <van-cell-group>
+                <van-field label="纳税人识别号：" v-model="nsrxx.nsrsbh" readonly />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field label="纳税人名称：" v-model="nsrxx.nsrmc" readonly />
+            </van-cell-group>
+            <van-cell-group>
+                <van-field label="有效期起：" :value="date" @click="show = true" />
+                <van-calendar v-model="show" @confirm="onConfirm" />
+
+                <!--            <van-field label="有效期起：" v-model="report.yxqq"/>-->
+            </van-cell-group>
+            <van-cell-group>
+                <van-field label="有效期止：" :value="date" @click="show = true" />
+                <van-calendar v-model="show" @confirm="onConfirm" />
+            </van-cell-group>
+            <van-cell-group>
+                <van-picker
+                        title="会计制度名称"
+                        :columns="columns"
+                        @confirm="onConfirm"
+                        @cancel="onCancel"
+                        @change="onChange"
+                />
+<!--                <div class="van-cell van-field">-->
+<!--                    <span class="van-field__label">会计制度名称：</span>-->
+<!--                    <select v-model="selected">-->
+<!--                        <option v-for="option in kjzdLists" :value="option.value">-->
+<!--                            {{ option.text }}-->
+<!--                        </option>-->
+<!--                    </select>-->
+<!--                </div>-->
+            </van-cell-group>
+        </van-form>
+
+
+        <div style="margin: 16px;">
+            <van-button round block type="primary" native-type="submit">
+                提交
+            </van-button>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/vue@next"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vant/3.4.9/vant.min.js"></script>
+
+
+<script>
+    // 在 #app 标签下渲染一个按钮组件
+
+
+    const app = Vue.createApp({
+        data() {
+            return {
+                required: '<span style="color: red">*</span>',
+                nsrxx: {
+                    nsrsbh: '91420281MA4F17HB04',
+                    nsrmc: '北京威特空间科技黄石分公司',
+                },
+                report: {
+                    yxqq: '2022-05-01',
+                    yxqz: '2022-05-01',
+                    kjzdzz_Dm: '2022-05-01',
+                },
+                selected: '',
+                kjzdLists: [
+                    { text: '101企业会计准则', value: '101' },
+                    { text: '102小企业会计准则', value: '102' },
+                    { text: '222民间非盈利组织会计制度', value: '222' },
+                    { text: '237政府会计制度准则', value: '237' },
+                ],
+                newTodoText: '',
+                todos: [],
+                nextTodoId: 1,
+                date: '',
+                show: false,
+            }
+        },
+        methods: {
+            formatDate(date) {
+                return `${date.getMonth() + 1}/${date.getDate()}`;
+            },
+            onConfirm(date) {
+                this.show = false;
+                this.date = this.formatDate(date);
+            },
+        },
+        setup() {
+
+            const columns = ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华'];
+
+            const onConfirm = (value, index) => {
+                Toast(`当前值: ${value}, 当前索引: ${index}`);
+            };
+            const onChange = (value, index) => {
+                Toast(`当前值: ${value}, 当前索引: ${index}`);
+            };
+            const onCancel = () => Toast('取消');
+
+            return {
+                columns,
+                onChange,
+                onCancel,
+                onConfirm,
+            };
+        },
+    });
+    app.use(vant);
+    // 通过 CDN 引入时不会自动注册 Lazyload 组件
+    // 可以通过下面的方式手动注册
+    app.use(vant.Lazyload);
+    app.use(vant.Calendar);
+    app.use(vant.Field);
+    app.use(vant.CellGroup);
+    app.use(vant.Form);
+    app.use(vant.Picker);
+    app.use(vant.Toast);
+
+    // 调用函数组件，弹出一个 Toast
+
+    app.mount('#app');
+
+</script>
+</body>
+</html>
